@@ -19,7 +19,7 @@ export default function contribute(server: PluginServerContext) {
         ...request.config.mcpServers,
         log: { type: "stdio", command: process.execPath, args: [MCP_FILE], env: { PASEO_LOG_FILE: LOG_FILE } },
       },
-      toolPolicy: { preapproved: [...(request.config.toolPolicy?.preapproved ?? []), { kind: "mcp", server: "log", tool: "log" }] },
+      toolPolicy: { preapproved: [...(request.config.toolPolicy?.preapproved ?? []), ...["log", "read_log", "delete_log"].map((tool) => ({ kind: "mcp" as const, server: "log", tool }))] },
     },
   }));
   return () => {};
