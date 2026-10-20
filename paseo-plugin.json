@@ -1,0 +1,9 @@
+{
+  "id": "paseo-log",
+  "media": [],
+  "requirements": {
+    "paseo": ">=0.11.4"
+  },
+  "name": "Log",
+  "description": "A log that agents write to and you read, newest first."
+}
