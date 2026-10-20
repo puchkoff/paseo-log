@@ -1,9 +1,10 @@
 import type { PluginScreenProps } from "@getpaseo/plugin/client";
-import { useRpc } from "@getpaseo/plugin/client";
+import { useRpc, useSettings } from "@getpaseo/plugin/client";
 import { ScrollView } from "@getpaseo/plugin/client/react-native";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { type Entry, listLog } from "../shared/log.ts";
+import { type Entry, listLog, readState, unreadCount } from "../shared/log.ts";
 
 const FS = { title: 29, body: 19, small: 17, tiny: 15 };
 
@@ -19,14 +20,43 @@ export function useLog() {
   return useQuery({ queryKey: ["paseo-log"], queryFn: () => list({ limit: 200 }), refetchInterval: 5000 });
 }
 
+// Unread count for the sidebar badge; undefined until both the log and the read marker have loaded.
+// Plain polling, not useQuery: sidebar items are not known to get a query client.
+export function useUnread(): number | undefined {
+  const list = useRpc(listLog);
+  const read = useSettings(readState);
+  const [entries, setEntries] = useState<Entry[] | null>(null);
+  useEffect(() => {
+    let alive = true;
+    const poll = () => list({ limit: 200 }).then((r) => alive && setEntries(r.entries), () => {});
+    void poll();
+    const t = setInterval(poll, 5000);
+    return () => { alive = false; clearInterval(t); };
+  }, []);
+  return entries && read.status === "ready" ? unreadCount(entries, read.values.seenAt) : undefined;
+}
+
 export function LogScreen({ theme, layout, host, navigation }: PluginScreenProps) {
   const c = theme.colors;
   const { data, error } = useLog();
+  const read = useSettings(readState);
+  // Entries newer than this were unread when the screen opened; they keep their mark while you read them.
+  const openedSeen = useRef<string | null>(null);
+  if (openedSeen.current === null && read.status === "ready") openedSeen.current = read.values.seenAt;
+  const newest = data?.entries[0]?.at;
+  useEffect(() => {
+    if (read.status === "ready" && !read.saving && newest && newest > read.values.seenAt) {
+      void read.save({ seenAt: newest }, read.revision);
+    }
+  }, [newest, read.status, read.status === "ready" ? read.values.seenAt : "", read.saving]);
   const color = { info: c.accent, success: c.statusSuccess, warning: c.statusWarning, error: c.statusDanger } as const;
 
-  const card = (e: Entry, i: number) => (
+  const card = (e: Entry, i: number) => {
+    const fresh = openedSeen.current !== null && e.at > openedSeen.current;
+    return (
     <View key={`${e.at}-${i}`} style={{ backgroundColor: c.surface1, borderColor: c.border, borderWidth: 1, borderLeftColor: color[e.level], borderLeftWidth: 4, borderRadius: 10, padding: 14, gap: 6 }}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+        {fresh ? <View style={{ width: 9, height: 9, borderRadius: 5, backgroundColor: c.accent }} accessibilityLabel="New" /> : null}
         {e.title ? <Text style={{ color: c.foreground, fontSize: FS.body, fontWeight: "600", flexShrink: 1 }}>{e.title}</Text> : null}
         <Text style={{ color: c.foregroundMuted, fontSize: FS.tiny, flex: 1 }} numberOfLines={1}>
           {[e.cwd?.split("/").slice(-2).join("/"), ago(e.at)].filter(Boolean).join(" · ")}
@@ -39,7 +69,8 @@ export function LogScreen({ theme, layout, host, navigation }: PluginScreenProps
       </View>
       <Text selectable style={{ color: c.foreground, fontSize: FS.small }}>{e.message}</Text>
     </View>
-  );
+    );
+  };
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: c.surface0 }} contentContainerStyle={{ padding: layout.compact ? 16 : 24, gap: 12, maxWidth: 860, width: "100%", alignSelf: "center" }}>
