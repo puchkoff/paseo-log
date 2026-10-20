@@ -1,4 +1,6 @@
-// Stdio MCP server, spawned per agent session. Zero dependencies: plain JSON-RPC over newline-delimited stdin/stdout.
+// The plugin subprocess has no path to its own files, so the stdio MCP script ships as a string
+// and is written to disk at startup (see index.server.ts). No backticks or `${` allowed inside.
+export const MCP_SOURCE = String.raw`// Stdio MCP server, spawned per agent session. Zero dependencies: plain JSON-RPC over newline-delimited stdin/stdout.
 import { appendFileSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
 import { createInterface } from "node:readline";
@@ -37,7 +39,7 @@ function call(args) {
     mkdirSync(dirname(file), { recursive: true });
     appendFileSync(file, JSON.stringify(entry) + "\n");
   } catch (e) {
-    return { isError: true, content: [{ type: "text", text: `could not write log: ${e.message}` }] };
+    return { isError: true, content: [{ type: "text", text: "could not write log: " + e.message }] };
   }
   return { content: [{ type: "text", text: "logged" }] };
 }
@@ -73,3 +75,4 @@ createInterface({ input: process.stdin }).on("line", (line) => {
   const reply = result === undefined ? { error: { code: -32601, message: "method not found" } } : { result };
   process.stdout.write(JSON.stringify({ jsonrpc: "2.0", id: msg.id, ...reply }) + "\n");
 });
+`;
