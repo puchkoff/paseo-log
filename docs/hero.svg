@@ -52,25 +52,25 @@
     <rect x="24" y="84" width="472" height="92" rx="12" fill="#ffffff" stroke="#e5e7f0"/>
     <circle cx="46" cy="110" r="6" fill="#059669"/>
     <text x="62" y="115" font-size="16" fill="#111827" font-weight="700" text-anchor="start" >Migration applied</text>
-    <text x="472" y="115" font-size="12" fill="#6b7280" font-weight="400" text-anchor="end" >14:02 · ~/WWW/billing</text>
+    <text x="472" y="115" font-size="12" fill="#6b7280" font-weight="400" text-anchor="end" >14:02 · ~/code/billing</text>
     <text x="62" y="142" font-size="14" fill="#374151" font-weight="400" text-anchor="start" >47 rows backfilled, no errors.</text>
     <text x="62" y="161" font-size="12" fill="#7c3aed" font-weight="600" text-anchor="start" text-decoration="underline">Open agent</text>
     <rect x="24" y="184" width="472" height="92" rx="12" fill="#ffffff" stroke="#e5e7f0"/>
     <circle cx="46" cy="210" r="6" fill="#d97706"/>
     <text x="62" y="215" font-size="16" fill="#111827" font-weight="700" text-anchor="start" >Blocked: needs a decision</text>
-    <text x="472" y="215" font-size="12" fill="#6b7280" font-weight="400" text-anchor="end" >13:41 · ~/WWW/web</text>
+    <text x="472" y="215" font-size="12" fill="#6b7280" font-weight="400" text-anchor="end" >13:41 · ~/code/web</text>
     <text x="62" y="242" font-size="14" fill="#374151" font-weight="400" text-anchor="start" >Two PRs touch auth.ts. Which first?</text>
     <text x="62" y="261" font-size="12" fill="#7c3aed" font-weight="600" text-anchor="start" text-decoration="underline">Open agent</text>
     <rect x="24" y="284" width="472" height="92" rx="12" fill="#ffffff" stroke="#e5e7f0"/>
     <circle cx="46" cy="310" r="6" fill="#dc2626"/>
     <text x="62" y="315" font-size="16" fill="#111827" font-weight="700" text-anchor="start" >Deploy failed</text>
-    <text x="472" y="315" font-size="12" fill="#6b7280" font-weight="400" text-anchor="end" >12:58 · ~/WWW/api</text>
+    <text x="472" y="315" font-size="12" fill="#6b7280" font-weight="400" text-anchor="end" >12:58 · ~/code/api</text>
     <text x="62" y="342" font-size="14" fill="#374151" font-weight="400" text-anchor="start" >Healthcheck timed out after 60 s.</text>
     <text x="62" y="361" font-size="12" fill="#7c3aed" font-weight="600" text-anchor="start" text-decoration="underline">Open agent</text>
     <rect x="24" y="384" width="472" height="92" rx="12" fill="#ffffff" stroke="#e5e7f0"/>
     <circle cx="46" cy="410" r="6" fill="#2563eb"/>
     <text x="62" y="415" font-size="16" fill="#111827" font-weight="700" text-anchor="start" >Plan ready</text>
-    <text x="472" y="415" font-size="12" fill="#6b7280" font-weight="400" text-anchor="end" >11:20 · ~/WWW/docs</text>
+    <text x="472" y="415" font-size="12" fill="#6b7280" font-weight="400" text-anchor="end" >11:20 · ~/code/docs</text>
     <text x="62" y="442" font-size="14" fill="#374151" font-weight="400" text-anchor="start" >Draft in docs/specs/export.</text>
     <text x="62" y="461" font-size="12" fill="#7c3aed" font-weight="600" text-anchor="start" text-decoration="underline">Open agent</text>
   </g>
