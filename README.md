@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/icon.png" width="96" alt="Log logo"></p>
+
 # Log — a Paseo plugin
 
 ![Log: Paseo plugin screen (illustration)](docs/hero.svg)
